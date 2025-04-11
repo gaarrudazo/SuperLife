@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diário Alimentar - ArrudaLife</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/diario.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-heartbeat"></i>
+            <span>ArrudaLife</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html"><i class="fas fa-home"></i> Início</a></li>
+            <li><a href="diario.html" class="active"><i class="fas fa-utensils"></i> Diário Alimentar</a></li>
+            <li><a href="calculadora.html"><i class="fas fa-calculator"></i> Calculadora</a></li>
+            <li><a href="plano.html"><i class="fas fa-clipboard-list"></i> Plano Alimentar</a></li>
+        </ul>
+        <div class="user-menu">
+            <button class="login-btn">Entrar</button>
+            <button class="register-btn">Cadastrar</button>
+        </div>
+    </nav>
+
+    <main class="diario-container">
+        <div class="diario-header">
+            <h1>Diário Alimentar</h1>
+            <div class="date-selector">
+                <button class="date-btn" id="prevDate"><i class="fas fa-chevron-left"></i></button>
+                <span class="current-date" id="currentDate">Hoje, 20 de Março</span>
+                <button class="date-btn" id="nextDate"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <div class="diario-content">
+            <div class="meal-section" data-meal="breakfast">
+                <div class="meal-header">
+                    <h2>Café da Manhã</h2>
+                    <button class="add-food-btn"><i class="fas fa-plus"></i> Adicionar Alimento</button>
+                </div>
+                <div class="food-list">
+                    <!-- Lista de alimentos do café da manhã -->
+                </div>
+            </div>
+
+            <div class="meal-section" data-meal="lunch">
+                <div class="meal-header">
+                    <h2>Almoço</h2>
+                    <button class="add-food-btn"><i class="fas fa-plus"></i> Adicionar Alimento</button>
+                </div>
+                <div class="food-list">
+                    <!-- Lista de alimentos do almoço -->
+                </div>
+            </div>
+
+            <div class="meal-section" data-meal="snack">
+                <div class="meal-header">
+                    <h2>Lanche</h2>
+                    <button class="add-food-btn"><i class="fas fa-plus"></i> Adicionar Alimento</button>
+                </div>
+                <div class="food-list">
+                    <!-- Lista de alimentos do lanche -->
+                </div>
+            </div>
+
+            <div class="meal-section" data-meal="dinner">
+                <div class="meal-header">
+                    <h2>Jantar</h2>
+                    <button class="add-food-btn"><i class="fas fa-plus"></i> Adicionar Alimento</button>
+                </div>
+                <div class="food-list">
+                    <!-- Lista de alimentos do jantar -->
+                </div>
+            </div>
+        </div>
+
+        <div class="nutrition-summary">
+            <h2>Resumo Nutricional</h2>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h3>Calorias</h3>
+                    <div class="summary-value">0 / 2,000 kcal</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <h3>Proteínas</h3>
+                    <div class="summary-value">0 / 75g</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <h3>Carboidratos</h3>
+                    <div class="summary-value">0 / 250g</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <h3>Gorduras</h3>
+                    <div class="summary-value">0 / 65g</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal para adicionar alimento -->
+    <div class="modal" id="addFoodModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Adicionar Alimento</h2>
+                <button class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="addFoodForm">
+                    <div class="form-group">
+                        <label for="foodSearch">Buscar Alimento</label>
+                        <div class="search-container">
+                            <input type="text" id="foodSearch" placeholder="Digite o nome do alimento">
+                            <button type="button" class="search-btn"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div id="foodResults"></div>
+                    <div class="form-group">
+                        <label for="portion">Porção</label>
+                        <input type="number" id="portion" placeholder="Quantidade">
+                        <select id="portionUnit">
+                            <option value="g">gramas (g)</option>
+                            <option value="ml">mililitros (ml)</option>
+                            <option value="un">unidades</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="mealType">Refeição</label>
+                        <select id="mealType">
+                            <option value="breakfast">Café da Manhã</option>
+                            <option value="lunch">Almoço</option>
+                            <option value="snack">Lanche</option>
+                            <option value="dinner">Jantar</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Adicionar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="../js/fatsecret.js"></script>
+    <script>
+        // Verificar se a API está disponível antes de carregar o diario.js
+        function checkAPI() {
+            if (typeof window.FatSecretAPI !== 'undefined' && 
+                typeof window.FatSecretAPI.searchFoods === 'function' &&
+                typeof window.FatSecretAPI.getFoodDetails === 'function') {
+                console.log('API do FatSecret está disponível, carregando diario.js...');
+                const script = document.createElement('script');
+                script.src = '../js/diario.js';
+                script.onload = function() {
+                    console.log('diario.js carregado, inicializando...');
+                    
+                    // Inicializar navegação de datas
+                    const currentDate = new Date();
+                    const currentDateElement = document.getElementById('currentDate');
+                    const prevDateBtn = document.getElementById('prevDate');
+                    const nextDateBtn = document.getElementById('nextDate');
+                    
+                    function updateDateDisplay(date) {
+                        currentDateElement.textContent = formatDate(date);
+                        loadDiaryForDate(date);
+                    }
+                    
+                    function formatDate(date) {
+                        const options = { weekday: 'long', day: 'numeric', month: 'long' };
+                        return date.toLocaleDateString('pt-BR', options);
+                    }
+                    
+                    // Event listeners para navegação de datas
+                    prevDateBtn.addEventListener('click', () => {
+                        currentDate.setDate(currentDate.getDate() - 1);
+                        updateDateDisplay(currentDate);
+                    });
+                    
+                    nextDateBtn.addEventListener('click', () => {
+                        currentDate.setDate(currentDate.getDate() + 1);
+                        updateDateDisplay(currentDate);
+                    });
+                    
+                    currentDateElement.addEventListener('click', () => {
+                        showCalendar(currentDate);
+                    });
+                    
+                    // Inicializar com a data atual
+                    updateDateDisplay(currentDate);
+                    
+                    // Adicionar event listeners para os botões de adicionar alimento
+                    const addFoodButtons = document.querySelectorAll('.add-food-btn');
+                    console.log('Botões encontrados:', addFoodButtons.length);
+                    
+                    addFoodButtons.forEach(button => {
+                        console.log('Adicionando event listener ao botão:', button);
+                        button.addEventListener('click', () => {
+                            console.log('Botão de adicionar alimento clicado');
+                            const modal = document.getElementById('addFoodModal');
+                            if (modal) {
+                                console.log('Modal encontrado, exibindo...');
+                                modal.style.display = 'block';
+                            } else {
+                                console.error('Modal não encontrado');
+                            }
+                        });
+                    });
+
+                    // Adicionar event listener para fechar o modal
+                    const closeModal = document.querySelector('.close-modal');
+                    if (closeModal) {
+                        console.log('Adicionando event listener para fechar o modal');
+                        closeModal.addEventListener('click', () => {
+                            const modal = document.getElementById('addFoodModal');
+                            if (modal) {
+                                modal.style.display = 'none';
+                            }
+                        });
+                    }
+
+                    // Adicionar event listeners para busca
+                    const searchBtn = document.querySelector('.search-btn');
+                    if (searchBtn) {
+                        console.log('Adicionando event listener para o botão de busca');
+                        searchBtn.addEventListener('click', () => {
+                            console.log('Botão de busca clicado');
+                            window.searchFoods();
+                        });
+                    }
+
+                    const searchForm = document.getElementById('addFoodForm');
+                    if (searchForm) {
+                        console.log('Adicionando event listener para o formulário');
+                        searchForm.addEventListener('submit', (e) => {
+                            e.preventDefault();
+                            console.log('Formulário submetido');
+                            window.searchFoods();
+                        });
+                    }
+
+                    const searchInput = document.getElementById('foodSearch');
+                    if (searchInput) {
+                        console.log('Adicionando event listener para o campo de busca');
+                        searchInput.addEventListener('keypress', (e) => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                console.log('Enter pressionado no campo de busca');
+                                window.searchFoods();
+                            }
+                        });
+                    }
+                };
+                document.body.appendChild(script);
+            } else {
+                console.log('API do FatSecret ainda não está disponível, tentando novamente...');
+                setTimeout(checkAPI, 100);
+            }
+        }
+
+        // Iniciar verificação quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', checkAPI);
+    </script>
+</body>
+</html> 

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Calorias - SuperLife</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .calculator-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .calculator-section {
+            margin-bottom: 2rem;
+        }
+
+        .calculator-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .result-box {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-top: 1.5rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .result-box p {
+            margin-bottom: 0.8rem;
+        }
+
+        .result-box strong {
+            color: var(--primary-color);
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 5px;
+            cursor: help;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="calculator-container">
+            <!-- Seção de Cálculo de Manutenção -->
+            <section class="calculator-section" id="maintenance">
+                <h2>Calorias de Manutenção</h2>
+                <form id="maintenanceForm">
+                    <div class="form-group">
+                        <label for="weight">Peso (kg)</label>
+                        <input type="number" id="weight" required step="0.1" placeholder="Digite seu peso">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="height">Altura (cm)</label>
+                        <input type="number" id="height" required step="0.1" placeholder="Digite sua altura">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="age">Idade</label>
+                        <input type="number" id="age" required placeholder="Digite sua idade">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gender">Gênero</label>
+                        <select id="gender" required>
+                            <option value="male">Masculino</option>
+                            <option value="female">Feminino</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="activity">Nível de Atividade
+                            <span class="tooltip">?
+                                <span class="tooltiptext">
+                                    Sedentário: pouco ou nenhum exercício<br>
+                                    Leve: exercício leve 1-3 dias/semana<br>
+                                    Moderado: exercício moderado 3-5 dias/semana<br>
+                                    Muito Ativo: exercício intenso 6-7 dias/semana<br>
+                                    Extremamente Ativo: exercício muito intenso diariamente
+                                </span>
+                            </span>
+                        </label>
+                        <select id="activity">
+                            <option value="1.2">Sedentário</option>
+                            <option value="1.375" selected>Leve</option>
+                            <option value="1.55">Moderado</option>
+                            <option value="1.725">Muito Ativo</option>
+                            <option value="1.9">Extremamente Ativo</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Calcular Manutenção</button>
+                </form>
+                <div class="result-box" id="maintenanceResult"></div>
+            </section>
+            
+            <!-- Seção para Planejamento de Perda de Peso -->
+            <section class="calculator-section" id="weightLoss">
+                <h2>Planejamento de Perda de Peso</h2>
+                <form id="weightLossForm">
+                    <div class="form-group">
+                        <label for="targetWeightLoss">Peso que deseja perder (kg)</label>
+                        <input type="number" id="targetWeightLoss" step="0.1" required placeholder="Digite o peso que deseja perder">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="calorieDeficit">Déficit calórico diário (calorias)
+                            <span class="tooltip">?
+                                <span class="tooltiptext">
+                                    O déficit calórico é a diferença entre as calorias que você consome e as que você gasta. 
+                                    Um déficit de 500 calorias por dia geralmente resulta em perda de 0.5kg por semana.
+                                </span>
+                            </span>
+                        </label>
+                        <input type="number" id="calorieDeficit" value="500" required placeholder="Digite o déficit calórico desejado">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Calcular Perda de Peso</button>
+                </form>
+                <div class="result-box" id="weightLossResult"></div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Variável para armazenar as calorias de manutenção calculadas
+        let maintenanceCalories = 0;
+        
+        // Cálculo das calorias de manutenção
+        document.getElementById('maintenanceForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            
+            // Coleta dos dados do formulário
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const age = parseFloat(document.getElementById('age').value);
+            const gender = document.getElementById('gender').value;
+            const activityFactor = parseFloat(document.getElementById('activity').value);
+            
+            let tmb = 0;
+            // Cálculo da TMB com a fórmula de Mifflin-St Jeor
+            if (gender === 'male') {
+                tmb = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+            } else {
+                tmb = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+            }
+            
+            // Calorias de manutenção = TMB x fator de atividade
+            maintenanceCalories = tmb * activityFactor;
+            
+            // Exibe os resultados
+            document.getElementById('maintenanceResult').innerHTML = 
+                `<p>Sua <strong>TMB</strong> é de aproximadamente <strong>${tmb.toFixed(2)}</strong> calorias.</p>
+                 <p>Para manter seu peso com o nível de atividade selecionado, você pode consumir cerca de <strong>${maintenanceCalories.toFixed(2)}</strong> calorias por dia.</p>`;
+        });
+        
+        // Cálculo para perda de peso
+        document.getElementById('weightLossForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            
+            // Verifica se as calorias de manutenção já foram calculadas
+            if (maintenanceCalories === 0) {
+                document.getElementById('weightLossResult').innerHTML = 
+                    "<p>Por favor, calcule suas calorias de manutenção primeiro.</p>";
+                return;
+            }
+            
+            // Coleta os dados do formulário de perda de peso
+            const targetWeightLoss = parseFloat(document.getElementById('targetWeightLoss').value);
+            const calorieDeficit = parseFloat(document.getElementById('calorieDeficit').value);
+            
+            // Calorias diárias recomendadas para perda de peso:
+            const recommendedCalories = maintenanceCalories - calorieDeficit;
+            
+            // Cálculo do tempo estimado para atingir o objetivo:
+            // 1 kg de gordura aproximadamente equivale a um déficit de 7700 calorias.
+            const totalDeficitNeeded = targetWeightLoss * 7700;
+            const daysNeeded = totalDeficitNeeded / calorieDeficit;
+            const weeksNeeded = daysNeeded / 7;
+            
+            document.getElementById('weightLossResult').innerHTML =
+                `<p>Para perder <strong>${targetWeightLoss.toFixed(2)} kg</strong>, recomenda-se consumir cerca de <strong>${recommendedCalories.toFixed(2)}</strong> calorias por dia.</p>
+                 <p>Estima-se que, com esse déficit, você levará aproximadamente <strong>${daysNeeded.toFixed(0)} dias</strong> (${weeksNeeded.toFixed(1)} semanas) para atingir esse objetivo.</p>`;
+        });
+    </script>
+</body>
+</html> 

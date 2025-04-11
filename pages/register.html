@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Calcular Calorias</title>
+    <link rel="stylesheet" href="/css/register.css">
+</head>
+<body>
+    <div class="container">
+        <div class="register-container">
+            <h1>Crie sua conta</h1>
+            <p class="subtitle">Preencha seus dados para começar</p>
+            
+            <form id="registerForm" class="register-form">
+                <div class="form-group">
+                    <label for="name">Nome completo</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="username">Nome de usuário</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmar senha</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="birthDate">Data de nascimento</label>
+                    <input type="date" id="birthDate" name="birthDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender">Gênero</label>
+                    <select id="gender" name="gender" required>
+                        <option value="">Selecione</option>
+                        <option value="male">Masculino</option>
+                        <option value="female">Feminino</option>
+                        <option value="other">Outro</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="height">Altura (cm)</label>
+                    <input type="number" id="height" name="height" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="weight">Peso atual (kg)</label>
+                    <input type="number" id="weight" name="weight" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="activityLevel">Nível de atividade física</label>
+                    <select id="activityLevel" name="activityLevel" required>
+                        <option value="">Selecione</option>
+                        <option value="sedentary">Sedentário</option>
+                        <option value="light">Leve</option>
+                        <option value="moderate">Moderado</option>
+                        <option value="active">Ativo</option>
+                        <option value="very_active">Muito ativo</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="goal">Objetivo</label>
+                    <select id="goal" name="goal" required>
+                        <option value="">Selecione</option>
+                        <option value="lose_weight">Perder peso</option>
+                        <option value="maintain">Manter peso</option>
+                        <option value="gain_weight">Ganhar peso</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn-register">Criar conta</button>
+                
+                <div class="form-footer">
+                    <p>Já tem uma conta? <a href="/login">Faça login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="/js/register.js"></script>
+</body>
+</html> 
